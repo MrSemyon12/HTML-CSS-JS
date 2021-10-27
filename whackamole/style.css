@@ -1,0 +1,41 @@
+body{
+    background-color: #8EDBD8;
+    font-family: "Comic Sans MS";
+}
+
+.info{
+    display: flex;
+    padding: 20px;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.start{
+    padding: 10px;
+    font-weight: bold;
+    font-size: 40px;
+    color: darkorange;
+    text-align: center;
+    background: brown;
+    border-radius: 100px;
+    margin-right: 100px;
+}
+
+.score{
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
+
+.field{
+    width: 640px;
+    height: 640px;
+    background-color: bisque;
+    border-radius: 40px;
+    margin: auto;
+}
+
+.cell{
+
+}
