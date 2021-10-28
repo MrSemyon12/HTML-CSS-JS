@@ -1,8 +1,7 @@
 body{
     background-color: #8EDBD8;
-    font-family: "Comic Sans MS";
+    font-family: "Comic Sans MS", serif;
 }
-
 .info{
     display: flex;
     padding: 20px;
@@ -10,7 +9,6 @@ body{
     align-items: center;
     justify-content: center;
 }
-
 .start{
     padding: 10px;
     font-weight: bold;
@@ -21,21 +19,28 @@ body{
     border-radius: 100px;
     margin-right: 100px;
 }
-
 .score{
     font-weight: bold;
     color: black;
     text-align: center;
 }
-
 .field{
-    width: 640px;
-    height: 640px;
-    background-color: bisque;
-    border-radius: 40px;
+    place-content: center;
+    width: 600px;
+    height: 600px;
+    background-color: seagreen;
+    border-radius: 50px;
     margin: auto;
+    padding: 10px;
 }
-
+.row{
+    margin-top: 5px;
+    margin-left: 10px;
+}
 .cell{
-
+    width: 140px;
+    height: 140px;
+    background: peru;
+    border-radius: 50px;
+    margin-right: 2px;
 }
