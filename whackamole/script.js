@@ -4,7 +4,6 @@ const timerTable = document.querySelector('.timer');
 const scoreTable = document.querySelector('.score');
 let timeLeft = 15, score = 0;
 let timer, gameLoop;
-let running = true;
 let molePos = null, molePrev = null;
 let updateMole = 500;
 
