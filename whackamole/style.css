@@ -9,15 +9,21 @@ body{
     align-items: center;
     justify-content: center;
 }
+.timer{
+    margin-right: 30px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
 .start{
     padding: 10px;
     font-weight: bold;
     font-size: 40px;
-    color: darkorange;
+    color: orange;
     text-align: center;
     background: brown;
     border-radius: 100px;
-    margin-right: 100px;
+    margin-right: 40px;
 }
 .score{
     font-weight: bold;
