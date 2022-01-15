@@ -43,26 +43,47 @@ function init() {
 
 function keydown(e) {
     let keyCode = e.keyCode;
+    console.log(keyCode);
     switch (keyCode) {
         case 37: { // left
             if (gameState.player.vel.x !== 1)
                 gameState.player.vel = { x: -1, y: 0 };
-            return;
+            break;
         }
-        case 38: { // down
+        case 65: { // left
+            if (gameState.player.vel.x !== 1)
+                gameState.player.vel = { x: -1, y: 0 };
+            break;
+        }
+        case 38: { // up
             if (gameState.player.vel.y !== 1)
                 gameState.player.vel = { x: 0, y: -1 };
-            return;
+            break;
+        }
+        case 87: { // up
+            if (gameState.player.vel.y !== 1)
+                gameState.player.vel = { x: 0, y: -1 };
+            break;
         }
         case 39: { // right
             if (gameState.player.vel.x !== -1)
                 gameState.player.vel =  { x: 1, y: 0 };
-            return;
+            break;
         }
-        case 40: { // up
+        case 68: { // right
+            if (gameState.player.vel.x !== -1)
+                gameState.player.vel =  { x: 1, y: 0 };
+            break;
+        }
+        case 40: { // down
             if (gameState.player.vel.y !== -1)
                 gameState.player.vel =  { x: 0, y: 1 };
-            return;
+            break;
+        }
+        case 83: { // down
+            if (gameState.player.vel.y !== -1)
+                gameState.player.vel =  { x: 0, y: 1 };
+            break;
         }
     }
 }
@@ -122,34 +143,43 @@ function checkWall(player) {
 
 function gameLoop() {
     let player = gameState.player;
+    let needGrow = false;
 
     player.pos.x += player.vel.x;
     player.pos.y += player.vel.y;
 
     checkWall(player);
 
+    player.snake.push({...player.pos});
+
     if (gameState.food.x === player.pos.x && gameState.food.y === player.pos.y) {
-        player.snake.push({ ...player.pos });
-        player.pos.x += player.vel.x;
-        player.pos.y += player.vel.y;
+        needGrow = true;
         randomFood();
     }
 
     if (player.vel.x || player.vel.y) {
+        let cnt = 0;
         for (let cell of player.snake) {
             if (cell.x === player.pos.x && cell.y === player.pos.y) {
-                gameActive = false;
-                return;
+                cnt++;
+                if (cnt > 1) {
+                    gameActive = false;
+                    return;
+                }
             }
         }
 
-        player.snake.push({ ...player.pos });
-        player.snake.shift();
+        //player.snake.push({ ...player.pos });
+        if (!needGrow) {
+            player.snake.shift();
+        } else {
+            needGrow = false;
+        }
     }
 }
 
 function endGameInterval(){
-    alert('You lose!');
+    alert('You lose!' + ' Score: ' + gameState.player.snake.length + '\/400');
 }
 
 function startGameInterval() {
