@@ -5,22 +5,7 @@ const FOOD_COLOUR = '#e66916';
 const FRAME_RATE = 10;
 
 let canvas, ctx;
-let gameActive = false;
-
-let score = [];
-
-const header = document.querySelector('.header');
-newScore = JSON.parse(localStorage.getItem('score'));
-if (newScore != null)
-    score = newScore
-console.log(score);
-
-for(let i = score.length - 1; score != null && i >= 0; i--){
-    if (i === 0)
-        header.insertAdjacentHTML('beforeend',`<b>${score[i]}</b>`);
-    else
-        header.insertAdjacentHTML('beforeend',`<b>${score[i]},</b>`);
-}
+let gameActive = '';
 
 let gameState = {
     player: {
@@ -53,7 +38,6 @@ function init() {
     randomFood();
 
     document.addEventListener('keydown', keydown);
-    gameActive = true;
 }
 
 function keydown(e) {
@@ -112,13 +96,13 @@ function paintGame() {
     ctx.fillStyle = FOOD_COLOUR;
     ctx.fillRect(food.x * size, food.y * size, size, size);
 
-    paintPlayer(gameState.player, size, SNAKE_COLOUR);
+    paintPlayer(size);
 }
 
-function paintPlayer(playerState, size, colour) {
-    const snake = playerState.snake;
+function paintPlayer(size) {
+    let snake = gameState.player.snake;
 
-    ctx.fillStyle = colour;
+    ctx.fillStyle = SNAKE_COLOUR;
     for (let cell of snake) {
         ctx.fillRect(cell.x * size, cell.y * size, size, size);
     }
@@ -139,7 +123,7 @@ function randomFood() {
 
 function checkWall(player) {
     if (player.pos.x < 0) {
-        player.pos.x = GRID_SIZE;
+        player.pos.x = GRID_SIZE - 1;
         return;
     }
     if (player.pos.x === GRID_SIZE) {
@@ -147,7 +131,7 @@ function checkWall(player) {
         return;
     }
     if (player.pos.y < 0) {
-        player.pos.y = GRID_SIZE;
+        player.pos.y = GRID_SIZE - 1;
         return;
     }
     if (player.pos.y === GRID_SIZE) {
@@ -157,7 +141,6 @@ function checkWall(player) {
 
 function gameLoop() {
     let player = gameState.player;
-    let needGrow = false;
 
     player.pos.x += player.vel.x;
     player.pos.y += player.vel.y;
@@ -167,47 +150,40 @@ function gameLoop() {
     player.snake.push({...player.pos});
 
     if (gameState.food.x === player.pos.x && gameState.food.y === player.pos.y) {
-        needGrow = true;
+        if (player.snake.length === 400){
+            gameActive = 'win';
+            return;
+        }
         randomFood();
     }
+    else {
+        player.snake.shift();
+    }
 
-    if (player.vel.x || player.vel.y) {
-        let cnt = 0;
-        for (let cell of player.snake) {
-            if (cell.x === player.pos.x && cell.y === player.pos.y) {
-                cnt++;
-                if (cnt > 1) {
-                    gameActive = false;
-                    return;
-                }
+    let cnt = 0;
+    for (let cell of player.snake) {
+        if (cell.x === player.pos.x && cell.y === player.pos.y) {
+            cnt++;
+            if (cnt > 1) {
+                gameActive = 'lose';
+                return;
             }
-        }
-
-        //player.snake.push({ ...player.pos });
-        if (needGrow) {
-            needGrow = false;
-        } else {
-            player.snake.shift();
         }
     }
 }
 
-function endGameInterval(){
-    score.push(gameState.player.snake.length);
-    if(score.length > 5)
-        score.shift();
-    localStorage.setItem('score', JSON.stringify(score));
-    alert('You lose!' + ' Score: ' + gameState.player.snake.length + '\/400');
+function endGame(msg){
+    alert('You ' + msg + '!' + ' Score: ' + gameState.player.snake.length + '\/400');
 }
 
 function startGameInterval() {
     const interval = setInterval(() => {
         gameLoop();
 
-        if (!gameActive) {
-            endGameInterval();
+        if (gameActive) {
             clearInterval(interval);
-        }else{
+            endGame(gameActive);
+        } else {
             paintGame();
         }
 
