@@ -7,6 +7,21 @@ const FRAME_RATE = 10;
 let canvas, ctx;
 let gameActive = false;
 
+let score = [];
+
+const header = document.querySelector('.header');
+newScore = JSON.parse(localStorage.getItem('score'));
+if (newScore != null)
+    score = newScore
+console.log(score);
+
+for(let i = score.length - 1; score != null && i >= 0; i--){
+    if (i === 0)
+        header.insertAdjacentHTML('beforeend',`<b>${score[i]}</b>`);
+    else
+        header.insertAdjacentHTML('beforeend',`<b>${score[i]},</b>`);
+}
+
 let gameState = {
     player: {
         pos: {
@@ -43,7 +58,6 @@ function init() {
 
 function keydown(e) {
     let keyCode = e.keyCode;
-    console.log(keyCode);
     switch (keyCode) {
         case 37: { // left
             if (gameState.player.vel.x !== 1)
@@ -170,15 +184,19 @@ function gameLoop() {
         }
 
         //player.snake.push({ ...player.pos });
-        if (!needGrow) {
-            player.snake.shift();
-        } else {
+        if (needGrow) {
             needGrow = false;
+        } else {
+            player.snake.shift();
         }
     }
 }
 
 function endGameInterval(){
+    score.push(gameState.player.snake.length);
+    if(score.length > 5)
+        score.shift();
+    localStorage.setItem('score', JSON.stringify(score));
     alert('You lose!' + ' Score: ' + gameState.player.snake.length + '\/400');
 }
 

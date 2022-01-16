@@ -7,9 +7,9 @@ for(let i = 1; i <= localStorage.length; i++){
         message.push(localStorage[i]);
         console.log(localStorage[i]);
         list.insertAdjacentHTML('beforeend',
-            `<p class="message-item" data-key="${localStorage[i]}">
+            `<b class="message-item" data-key="${localStorage[i]}">
             <span>${localStorage[i]}</span>
-        </p>`
+        </b>`
         );
 }
 
