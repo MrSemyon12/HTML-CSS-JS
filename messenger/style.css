@@ -1,6 +1,6 @@
 body{
     background-color: #8EDBD8;
-    font-family: "Comic Sans MS";
+    font-family: "Comic Sans MS"
 }
 .header{
     font-size: 45px;
@@ -42,6 +42,7 @@ body{
     margin: 10px;
     padding: 5px;
     width: fit-content;
+    font-weight: bold;
 }
 .typedMessage{
     width: 87%;
